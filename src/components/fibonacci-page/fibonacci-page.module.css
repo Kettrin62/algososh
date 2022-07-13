@@ -13,3 +13,7 @@
 .flex {
   justify-content: flex-start;
 }
+
+.button {
+  min-width: 178px;
+}

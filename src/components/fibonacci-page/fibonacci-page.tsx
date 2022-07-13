@@ -68,6 +68,8 @@ export const FibonacciPage: React.FC = () => {
           type='submit'
           disabled={disabled}
           isLoader={isLoader}
+          linkedList='small'
+          extraClass={fibonacciStyles.button}
         />
       </Form>
       {array && (

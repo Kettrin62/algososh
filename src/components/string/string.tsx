@@ -75,6 +75,8 @@ export const StringComponent: React.FC = () => {
           type = 'submit'
           disabled={disabled}
           isLoader={isLoader}
+          linkedList='small'
+          extraClass={stringStyles.button}
         />
       </Form>
       {array && (
