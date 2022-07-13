@@ -2,7 +2,6 @@ import { FC } from 'react';
 import formStyles from './form.module.css';
 
 interface IFormProps {
-  // class?: string;
   name: string;
   onSubmit: (e: React.FormEvent) => void;
 };
