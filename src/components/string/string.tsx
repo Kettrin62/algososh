@@ -66,15 +66,15 @@ export const StringComponent: React.FC = () => {
     <SolutionLayout title='Строка'>
       <Form name='string' onSubmit={stringSubmit}>
         <Input
-        maxLength = {11}
-        isLimitText = {true}
-        onChange={onChangeTextValue}
+          maxLength = {11}
+          isLimitText = {true}
+          onChange={onChangeTextValue}
         />
         <Button
-        text = 'Развернуть'
-        type = 'submit'
-        disabled={disabled}
-        isLoader={isLoader}
+          text = 'Развернуть'
+          type = 'submit'
+          disabled={disabled}
+          isLoader={isLoader}
         />
       </Form>
       {array && (
