@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DELAY_IN_MS } from '../../constants/delays';
-import { TCircle } from '../../types/data';
+import { TElement } from '../../types/data';
 import { ElementStates } from '../../types/element-states';
 import { stringConversion } from '../../utils/functions';
 import Form from '../form/form';
@@ -13,7 +13,7 @@ import stringStyles from './string.module.css';
 export const StringComponent: React.FC = () => {
   const [textValue, setTextValue] = useState('');
   const [disabled, setDisabled] = useState(true);
-  const [array, setArray] = useState<TCircle[]>();
+  const [array, setArray] = useState<TElement<string>[]>();
   const [isLoader, setIsLoader] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export const StringComponent: React.FC = () => {
   };
 
   const reverseString = (str: string): void  => {
-    const arr = stringConversion(textValue);
+    const arr = stringConversion(str);
     setArray([...arr]);
     const cycleEnd = arr.length / 2
     for (let i = 0; i < cycleEnd; i++) {

@@ -1,6 +1,8 @@
 import { ElementStates } from './element-states';
 
-export type TCircle = {
-  value: string;
+export type TElement<T> = {
+  value: T;
   state: ElementStates;
 }
+
+export type TSelector = 'descending' | 'ascending';
