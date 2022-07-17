@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SHORT_DELAY_IN_MS } from '../../constants/delays';
+import { delay } from '../../utils/functions';
 import Form from '../form/form';
 import { Button } from '../ui/button/button';
 import { Circle } from '../ui/circle/circle';
@@ -24,7 +25,7 @@ export const FibonacciPage: React.FC = () => {
     } else setDisabled(true);
   }, [inputValue]);
 
-  const getFibonacciNumbers = (n: number): number[] => {
+  const getFibonacciNumbers = async (n: number) => {
     let arr: number[] = [0];
     setArray(arr);
     setTimeout(() => {
@@ -37,10 +38,8 @@ export const FibonacciPage: React.FC = () => {
         setArray([...arr]);
       }, SHORT_DELAY_IN_MS * i )
     }
-    setTimeout(() => {
-      setIsLoader(false);
-    }, SHORT_DELAY_IN_MS * n);
-    return arr;
+    await delay(SHORT_DELAY_IN_MS * n);
+    setIsLoader(false);
   } 
 
   const fibonacciSubmit = (e:React.FormEvent) => {
@@ -72,18 +71,16 @@ export const FibonacciPage: React.FC = () => {
           extraClass={fibonacciStyles.button}
         />
       </Form>
-      {array && (
-        <ul className={fibonacciStyles.list + className}>
-          {array.map((el, index) => (
-            <li key={index}>
-              <Circle
-                letter={`${el}`}
-                index={index}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className={fibonacciStyles.list + className}>
+        {array?.map((el, index) => (
+          <li key={index}>
+            <Circle
+              letter={`${el}`}
+              index={index}
+            />
+          </li>
+        ))}
+      </ul>
     </SolutionLayout>
   );
 };

@@ -3,7 +3,7 @@ import { SHORT_DELAY_IN_MS } from '../../constants/delays';
 import { TElement, TSelector } from '../../types/data';
 import { Direction } from '../../types/direction';
 import { ElementStates } from '../../types/element-states';
-import { randomArr, swap } from '../../utils/functions';
+import { delay, randomArr, swap } from '../../utils/functions';
 import Form from '../form/form';
 import { Button } from '../ui/button/button';
 import { Column } from '../ui/column/column';
@@ -41,11 +41,7 @@ export const SortingPage: React.FC = () => {
         arr[i].state = ElementStates.Changing;
         arr[j].state = ElementStates.Changing;
         setArray([...arr]);
-        await new Promise((resolve: any) =>
-          setTimeout(() => {
-            resolve();
-          }, SHORT_DELAY_IN_MS)
-        );
+        await delay(SHORT_DELAY_IN_MS);
         if (selector === 'descending' && arr[maxInd].value < arr[j].value) {
           maxInd = j;
         }
@@ -81,11 +77,7 @@ export const SortingPage: React.FC = () => {
         arr[j].state = ElementStates.Changing;
         arr[j + 1].state = ElementStates.Changing;
         setArray([...arr]);
-        await new Promise((resolve: any) =>
-          setTimeout(() => {
-            resolve();
-          }, SHORT_DELAY_IN_MS)
-        );
+        await delay(SHORT_DELAY_IN_MS);
         if (
           selector === 'descending' && arr[j].value < arr[j + 1].value || 
           selector === 'ascending' && arr[j].value > arr[j + 1].value
@@ -178,18 +170,16 @@ export const SortingPage: React.FC = () => {
           disabled={disabled}
         />
       </Form>
-      {array && (
-        <ul className={sortingStyles.list}>
-          {array.map((el, index) => (
-            <li key={index}>
-              <Column 
-                index={el.value}
-                state={el.state}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className={sortingStyles.list}>
+        {array?.map((el, index) => (
+          <li key={index}>
+            <Column 
+              index={el.value}
+              state={el.state}
+            />
+          </li>
+        ))}
+      </ul>
     </SolutionLayout>
   );
 };

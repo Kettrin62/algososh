@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DELAY_IN_MS } from '../../constants/delays';
 import { TElement } from '../../types/data';
 import { ElementStates } from '../../types/element-states';
-import { stringConversion } from '../../utils/functions';
+import { delay, stringConversion } from '../../utils/functions';
 import Form from '../form/form';
 import { Button } from '../ui/button/button';
 import { Circle } from '../ui/circle/circle';
@@ -26,7 +26,7 @@ export const StringComponent: React.FC = () => {
     setTextValue(e.target.value);
   };
 
-  const reverseString = (str: string): void  => {
+  const reverseString = async (str: string)  => {
     const arr = stringConversion(str);
     setArray([...arr]);
     const cycleEnd = arr.length / 2
@@ -51,9 +51,8 @@ export const StringComponent: React.FC = () => {
         }, DELAY_IN_MS);
       }, DELAY_IN_MS * i);
     }
-    setTimeout(() => {
-      setIsLoader(false);
-    }, DELAY_IN_MS * (cycleEnd + 1/2));
+    await delay(DELAY_IN_MS * (cycleEnd + 1/2));
+    setIsLoader(false);
   }
 
   const stringSubmit = (e: React.FormEvent) => {
@@ -79,18 +78,16 @@ export const StringComponent: React.FC = () => {
           extraClass={stringStyles.button}
         />
       </Form>
-      {array && (
-        <ul className={stringStyles.list}>
-          {array.map((el, index) => (
-            <li key = {index}>
-              <Circle
-                letter={el.value}
-                state={el.state}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className={stringStyles.list}>
+        {array?.map((el, index) => (
+          <li key = {index}>
+            <Circle
+              letter={el.value}
+              state={el.state}
+            />
+          </li>
+        ))}
+      </ul>
     </SolutionLayout>
   );
 };

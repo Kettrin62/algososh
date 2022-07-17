@@ -12,7 +12,11 @@ export function stringConversion(str: string): TElement<string>[] {
   return arr;
 };
 
-export function randomArr(minLen = 3, maxLen = 17, max = 100): TElement<number>[] {
+export function randomArr(
+  minLen = 3, 
+  maxLen = 17, 
+  max = 100
+): TElement<number>[] {
   const random = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
@@ -27,8 +31,16 @@ export function randomArr(minLen = 3, maxLen = 17, max = 100): TElement<number>[
   return array;
 }
 
-export const swap = (arr: TElement<number>[], firstIndex: number, secondIndex: number): void => {
+export const swap = (
+  arr: TElement<number>[], 
+  firstIndex: number, 
+  secondIndex: number
+): void => {
   const temp = arr[firstIndex].value;
   arr[firstIndex].value = arr[secondIndex].value;
   arr[secondIndex].value = temp;
 };
+
+export const delay = (
+  t: number
+) => new Promise(resolve => setTimeout(resolve, t));

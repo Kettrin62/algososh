@@ -27,7 +27,7 @@ export class Stack<T> implements IStack<T> {
 
   getStack = () => this.container;
 
-  clear = () => {
+  reset = () => {
     this.container = [];
   };
 }
