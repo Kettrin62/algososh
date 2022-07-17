@@ -55,7 +55,7 @@ export const StringComponent: React.FC = () => {
     setIsLoader(false);
   }
 
-  const stringSubmit = (e: React.FormEvent) => {
+  const onStringSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoader(true);
     reverseString(textValue);
@@ -63,7 +63,10 @@ export const StringComponent: React.FC = () => {
 
   return (
     <SolutionLayout title='Строка'>
-      <Form name='string' onSubmit={stringSubmit}>
+      <Form 
+        name='string' 
+        onSubmit={onStringSubmit}
+      >
         <Input
           maxLength = {11}
           isLimitText = {true}

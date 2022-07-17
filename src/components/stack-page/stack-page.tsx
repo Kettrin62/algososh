@@ -47,7 +47,7 @@ export const StackPage: React.FC = () => {
     setInputValue(e.target.value);
   };
 
-  const stackSubmit = async (e: React.FormEvent) => {
+  const onStackSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     inputValue &&
     stackRef.current.push({
@@ -104,7 +104,7 @@ export const StackPage: React.FC = () => {
     <SolutionLayout title='Стек'>
       <Form
         name='stack' 
-        onSubmit={stackSubmit}
+        onSubmit={onStackSubmit}
         extraClassForm={stackStyles.form}
       >
         <Input 
