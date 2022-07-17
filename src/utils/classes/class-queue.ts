@@ -13,7 +13,7 @@ export class Queue<T> implements IQueue<T> {
 
   constructor(size: number) {
     this.size = size;
-    this.container = Array(size);
+    this.container = Array(size).fill(null);
   }
 
   enqueue = (item: T) => {
@@ -31,9 +31,13 @@ export class Queue<T> implements IQueue<T> {
       throw new Error("No elements in the queue");
     }
 
-    delete this.container[this.head];
+    this.container[this.head] = null;
     this.head++;
     this.length--;
+  };
+
+  clear = () => {
+    this.container = Array(this.size).fill(null);
   };
 
   peak = (): T | null => {
@@ -47,4 +51,39 @@ export class Queue<T> implements IQueue<T> {
   };
 
   isEmpty = () => this.length === 0;
+
+  getQueue = () => this.container;
+
+  getHead = () => this.head;
+
+  getTail = () => this.tail - 1;
+
+  getLength = () => this.length;
+
+  getSize = () => this.size;
+
+
+
+
+  setClear = () => {
+    this.head = 0;
+    this.tail = 0;
+    this.length = 0;
+    this.container = Array(this.size).fill(null);
+  };
+
+
+
+
+  getElements() {
+    return this.container;
+  }
+
+  
+
+
+
+
+
+
 }

@@ -93,8 +93,8 @@ export const StackPage: React.FC = () => {
     }
   };
 
-  const onClickReset = async () => {
-    stackRef.current.reset();
+  const onClickClear = async () => {
+    stackRef.current.clear();
     setArray(stackRef.current.getStack());
     setStateButtonClear({...stateButtonClear, disabled: true});
     setStateButtonRemove({...stateButtonRemove, disabled: true});
@@ -132,27 +132,25 @@ export const StackPage: React.FC = () => {
           extraClass={stackStyles.button}
           isLoader={stateButtonClear.isLoader}
           disabled={stateButtonClear.disabled}
-          onClick={onClickReset}
+          onClick={onClickClear}
         />
       </Form>
-      {array && (
-        <ul className={stackStyles.list}>
-          {array.map((el, index) => (
-            <li key = {index}>
-              <Circle
-                letter={el.value}
-                state={
-                  index === top  
-                  ? state 
-                  : el.state
-                }
-                index={index}
-                head={index === top ? 'top' : null}
-              />
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className={stackStyles.list}>
+        {array?.map((el, index) => (
+          <li key = {index}>
+            <Circle
+              letter={el.value}
+              state={
+                index === top  
+                ? state 
+                : el.state
+              }
+              index={index}
+              head={index === top ? 'top' : null}
+            />
+          </li>
+        ))}
+      </ul>
     </SolutionLayout>
   );
 };

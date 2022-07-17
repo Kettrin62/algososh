@@ -5,3 +5,12 @@
 .button {
   margin-left: 68px;
 }
+
+.list {
+  list-style-type: none;
+  margin: 48px 0 0;
+  padding: 0;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}

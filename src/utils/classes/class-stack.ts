@@ -23,11 +23,11 @@ export class Stack<T> implements IStack<T> {
     return null;
   };
 
+  clear = () => {
+    this.container = [];
+  };
+
   getSize = () => this.container.length;
 
   getStack = () => this.container;
-
-  reset = () => {
-    this.container = [];
-  };
 }
