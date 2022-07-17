@@ -8,13 +8,24 @@ interface IFormProps {
   extraClassFieldset?: string;
 };
 
-const Form: FC<IFormProps> = (props) => {
-  const classNameForm = `${formStyles.form} ${props.extraClassForm}`;
-  const classNameFieldset = `${formStyles.form__info} ${props.extraClassFieldset}`;
+const Form: FC<IFormProps> = ({
+  name,
+  onSubmit,
+  extraClassForm,
+  extraClassFieldset,
+  children,
+}) => {
+  const classNameForm = `${formStyles.form} ${extraClassForm}`;
+  const classNameFieldset = `${formStyles.form__info} ${extraClassFieldset}`;
+
   return (
-    <form name={props.name} className={classNameForm} onSubmit={props.onSubmit}>
+    <form 
+      name={name} 
+      className={classNameForm} 
+      onSubmit={onSubmit}
+    >
       <fieldset className={classNameFieldset}>
-        {props.children}
+        {children}
       </fieldset>
     </form>
   )
