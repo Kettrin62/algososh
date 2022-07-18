@@ -59,21 +59,18 @@ export const QueuePage: React.FC = () => {
 
   const onQueueSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (length >= size) {
-      return;
-    }
     queueRef.current.enqueue({
       value: inputValue,
       state: ElementStates.Default,
     });
     setCurrent(tail + 1);
     setState(ElementStates.Changing);
-    setInputValue('');
     setArray(queueRef.current.getQueue());
     setStateButtonAdd({...stateButtonAdd, isLoader: true});
     setStateButtonRemove({...stateButtonRemove, disabled: true});
     setStateButtonClear({...stateButtonClear, disabled: true});
     await delay(SHORT_DELAY_IN_MS);
+    setInputValue('');
     setState(ElementStates.Default);
     setStateButtonAdd({
       isLoader: false,
@@ -92,19 +89,15 @@ export const QueuePage: React.FC = () => {
     queueRef.current.dequeue();
     setState(ElementStates.Default);
     setArray(queueRef.current.getQueue());
-    if (length > 0) {
+    if (length > 1) {
       setStateButtonRemove({...stateButtonRemove, isLoader: false});
-      setStateButtonClear({...stateButtonClear, disabled: false});
     } else {
       setStateButtonRemove({
         isLoader: false,
         disabled: true,
       });
-      setStateButtonClear({
-        isLoader: false,
-        disabled: true,
-      });
     }
+    setStateButtonClear({...stateButtonClear, disabled: false});
   };
 
   const onClickClear = async () => {
@@ -113,7 +106,6 @@ export const QueuePage: React.FC = () => {
     setStateButtonClear({...stateButtonClear, disabled: true});
     setStateButtonRemove({...stateButtonRemove, disabled: true});
   };
-
 
   return (
     <SolutionLayout title='Очередь'>
@@ -161,7 +153,13 @@ export const QueuePage: React.FC = () => {
                 : el?.state
               }
               index={index}
-              head={el?.value && index === head ? 'head' : null}
+              head={
+                (el?.value && index === head) 
+                || (head === size && index === head - 1) 
+                || (head > 0 && length === 0 && index === head - 1)
+                ? 'head' 
+                : null
+              }
               tail={el?.value && index === tail ? 'tail' : null}
             />
           </li>
