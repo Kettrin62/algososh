@@ -6,7 +6,7 @@ import { Button } from '../ui/button/button';
 import { Circle } from '../ui/circle/circle';
 import { Input } from '../ui/input/input';
 import { SolutionLayout } from '../ui/solution-layout/solution-layout';
-import { Stack } from '../../utils/classes/class-stack';
+import { Stack } from './class-stack';
 import stackStyles from './stack-page.module.css';
 import { delay } from '../../utils/functions';
 import { SHORT_DELAY_IN_MS } from '../../constants/delays';

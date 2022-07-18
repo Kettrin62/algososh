@@ -13,9 +13,9 @@ export function stringConversion(str: string): TElement<string>[] {
 };
 
 export function randomArr(
-  minLen = 3, 
-  maxLen = 17, 
-  max = 100
+  minLen: number, 
+  maxLen: number, 
+  max: number
 ): TElement<number>[] {
   const random = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;

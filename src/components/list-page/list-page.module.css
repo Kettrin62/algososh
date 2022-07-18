@@ -1,0 +1,25 @@
+.form {
+  width: 952px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fieldset {
+  width: 100%;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.button_size_small {
+  min-width: 175px;
+}
+
+.button_size_big {
+  min-width: 362px;
+}

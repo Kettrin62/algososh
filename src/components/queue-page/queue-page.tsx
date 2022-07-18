@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { SHORT_DELAY_IN_MS } from '../../constants/delays';
 import { TElement } from '../../types/data';
 import { ElementStates } from '../../types/element-states';
-import { Queue } from '../../utils/classes/class-queue';
+import { Queue } from './class-queue';
 import { delay } from '../../utils/functions';
 import Form from '../form/form';
 import { Button } from '../ui/button/button';

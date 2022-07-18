@@ -23,9 +23,10 @@ export const SortingPage: React.FC = () => {
     disabled: false,
   });
   const [disabled, setDisabled] = useState(false);
+  const [minLen, maxLen, max] = [3, 17, 100]
 
   useEffect(() => {
-    setArray(randomArr());
+    setArray(randomArr(minLen, maxLen, max));
     setRadioInputValue('selection');
   }, [])
 
@@ -121,7 +122,7 @@ export const SortingPage: React.FC = () => {
   };
 
   const onClickRandom = () => {
-    setArray(randomArr());
+    setArray(randomArr(minLen, maxLen, max));
   };
 
   return (

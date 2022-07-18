@@ -1,7 +1,14 @@
 interface IQueue<T> {
   enqueue: (item: T) => void;
   dequeue: () => void;
+  clear: () => void;
   peak: () => T | null;
+  isEmpty: () => boolean;
+  getQueue: () => (T | null)[];
+  getHead: () => number;
+  getTail: () => number;
+  getLength: () => number;
+  getSize: () => number;
 }
 
 export class Queue<T> implements IQueue<T> {
@@ -17,9 +24,6 @@ export class Queue<T> implements IQueue<T> {
   }
 
   enqueue = (item: T) => {
-    // if (this.length >= this.size) {
-    //   throw new Error("Maximum length exceeded");
-    // }
     if (this.tail>= this.size) {
       throw new Error("Maximum length exceeded");
     }
@@ -67,29 +71,4 @@ export class Queue<T> implements IQueue<T> {
   getLength = () => this.length;
 
   getSize = () => this.size;
-
-
-
-
-  setClear = () => {
-    this.head = 0;
-    this.tail = 0;
-    this.length = 0;
-    this.container = Array(this.size).fill(null);
-  };
-
-
-
-
-  getElements() {
-    return this.container;
-  }
-
-  
-
-
-
-
-
-
 }
