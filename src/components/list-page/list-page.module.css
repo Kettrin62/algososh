@@ -23,3 +23,19 @@
 .button_size_big {
   min-width: 362px;
 }
+
+.list {
+  list-style-type: none;
+  margin: 120px 0 0;
+  padding: 0;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+

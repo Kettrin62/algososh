@@ -144,7 +144,7 @@ export const QueuePage: React.FC = () => {
       </Form>
       <ul className={queueStyles.list}>
         {array?.map((el, index) => (
-          <li key = {index}>
+          <li key={index}>
             <Circle
               letter={el?.value ? el.value : ''}
               state={
