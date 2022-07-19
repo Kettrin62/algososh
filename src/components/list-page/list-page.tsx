@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SHORT_DELAY_IN_MS } from '../../constants/delays';
+import { ElementStates } from '../../types/element-states';
 import { delay, randomArr } from '../../utils/functions';
 import Form from '../form/form';
 import { Button } from '../ui/button/button';
@@ -23,11 +24,7 @@ export const ListPage: React.FC = () => {
   const [array, setArray] = useState<Array<string | number>>();
   const [head, setHead] = useState<number>();
   const [tail, setTail] = useState<number>();
-
-  const [state, setState] = useState({
-    text: '',
-    index: '',
-  });
+  const [currentHead, setCurrentHead] = useState<string | React.ReactElement>('head');
 
   useEffect(() => {
     setArray(linkedListkRef.current.toInitArray());
@@ -44,7 +41,15 @@ export const ListPage: React.FC = () => {
   };
 
   const onClickAddHead = async () => {
+    setCurrentHead(
+      <Circle
+        letter={inputTextValue}
+        state={ElementStates.Changing}
+        isSmall={true}
+      />
+    );
     await delay(SHORT_DELAY_IN_MS);
+    setCurrentHead('head');
     linkedListkRef.current.prepend(inputTextValue);
     setArray(linkedListkRef.current.toArray());
     setInputTextValue('');
@@ -85,14 +90,13 @@ export const ListPage: React.FC = () => {
     setArray(linkedListkRef.current.toArray());
     setInputIndexValue('');
   };
-  
+
 
   return (
     <SolutionLayout title='Связный список'>
       <form
         name='list'
         className={listStyles.form}
-        // onReset={onReset}
       >
         <fieldset className={listStyles.fieldset}>
           <Input
@@ -148,7 +152,9 @@ export const ListPage: React.FC = () => {
             <Circle
               letter={`${el}`}
               index={index}
-              head={index === head ? 'head' : null}
+              head={index === head 
+                ? currentHead
+                : null}
               tail={index === array.length - 1 ? 'tail' : null}
             />
             {(index !== array.length - 1) 

@@ -12,13 +12,13 @@ export class LinkedListNode<T> {
 interface ILinkedList<T> {
   append: (element: T) => void;
   prepend: (element: T) => void;
-  addByIndex: (element: T, position: number) => void;
+  addByIndex: (element: T, index: number) => void;
   deleteHead: () => void;
   deleteTail: () => void;
+  deleteByIndex: (index: number) => void;
   getSize: () => number;
   toArray: () => void;
   toInitArray: () => void;
-  // print: () => void;
 }
 
 export class LinkedList<T> implements ILinkedList<T> {
@@ -37,32 +37,21 @@ export class LinkedList<T> implements ILinkedList<T> {
       return;
     } else {
       const node = new LinkedListNode(element);
-
-      // добавить элемент в начало списка
       if (index === 0) {
-        // ваш код ...
         node.next = this.head;
         this.head = node;
       } else {
         let curr = this.head;
         let currIndex = 0;
-
-        // перебрать элементы в списке до нужной позиции
-        // ваш код ...
         if (curr) {
-
           while ((currIndex < index - 1) && (curr.next)) {
             curr = curr.next;
             currIndex++;
           }
-
-          // добавить элемент
-          // ваш код ...
           node.next = curr.next;
           curr.next = node;
         }
       }
-
       this.size++;
     }
   }
@@ -84,7 +73,6 @@ export class LinkedList<T> implements ILinkedList<T> {
 
   prepend(element: T) {
     const node = new LinkedListNode(element);
-    let current;
     if (this.head === null) {
       this.head = node;
     } else {
@@ -95,7 +83,7 @@ export class LinkedList<T> implements ILinkedList<T> {
   }
 
   deleteHead() {
-    if (this.head && this.head?.next !== null) {
+    if (this.head && this.head.next !== null) {
       const current = this.head.next;
       this.head = current;
       this.size--;
@@ -105,7 +93,7 @@ export class LinkedList<T> implements ILinkedList<T> {
   }
 
   deleteTail() {
-    if (this.head && this.head?.next !== null) {
+    if (this.head && this.head.next !== null) {
       let curr = this.head;
       let prev;
       while (curr.next) {
@@ -141,7 +129,6 @@ export class LinkedList<T> implements ILinkedList<T> {
           if (prev) {
             prev.next = curr.next;
           }
-          
         }
       }
       this.size--;
@@ -168,14 +155,4 @@ export class LinkedList<T> implements ILinkedList<T> {
     })
     return this.toArray();
   }
-
-  // print() {
-  //   let curr = this.head;
-  //   let res = '';
-  //   while (curr) {
-  //     res += `${curr.value} `;
-  //     curr = curr.next;
-  //   }
-  //   console.log(res);
-  // }
 }
