@@ -6,8 +6,3 @@ export type TElement<T> = {
 }
 
 export type TSelector = 'descending' | 'ascending';
-
-export type TElementLinkedList<T> = TElement<T> & {
-  head?: string | React.ReactElement | null;
-  tail?: string | React.ReactElement | null;
-}

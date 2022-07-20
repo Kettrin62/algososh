@@ -14,7 +14,6 @@ import listStyles from './list-page.module.css';
 
 interface Current {
   index: number | null,
-  state: ElementStates,
   head: React.ReactElement | null,
   tail: React.ReactElement | null,
 };
@@ -26,30 +25,22 @@ export const ListPage: React.FC = () => {
 
   const [minLen, maxLen, max] = [3, 6, 100]
 
-  const linkedList = new LinkedList<TElement<number | string>>(randomArr(minLen, maxLen, max));
+  const linkedList = new LinkedList<number | string>(randomArr(minLen, maxLen, max));
   const linkedListkRef = useRef(linkedList);
   
-  const [array, setArray] = useState<TElement<number | string>[]>();
+  const [array, setArray] = useState<Array<string | number>>();
   const [head, setHead] = useState<number>();
 
   const [currentHead, setCurrentHead] = useState<string | React.ReactElement>();
 
-  const [currentHeadAdd, setCurrentHeadAdd] = useState<string | React.ReactElement>('');
-  const [state, setState] = useState<ElementStates>();
+  const [stateHead, setStateHead] = useState<ElementStates>();
   const [stateAdd, setStateAdd] = useState<ElementStates[]>(Array(linkedListkRef.current.getSize()).fill(ElementStates.Default));
-  const [element, setElement] = useState<TElement<number | string> | null>();
 
   const [currentAdd, setCurrentAdd] = useState<Current>({
     index: null,
-    state: ElementStates.Default,
     head: null,
     tail: null,
   })
-
-  const [color, setColor] = useState<ElementStates[]>(
-    Array(4).fill(ElementStates.Default)
-  );
-
 
   useEffect(() => {
     setArray(linkedListkRef.current.toInitArray());
@@ -65,48 +56,47 @@ export const ListPage: React.FC = () => {
     setInputIndexValue(target);
   };
 
+  const circle: React.ReactElement = (
+    <Circle
+      letter={inputTextValue}
+      state={ElementStates.Changing}
+      isSmall={true}
+    />
+  );
+
   const onClickAddHead = async () => {
-    setCurrentHead(
-      <Circle
-        letter={inputTextValue}
-        state={ElementStates.Changing}
-        isSmall={true}
-      />
-    );
-    await delay(DELAY_IN_MS);
+    setCurrentHead(circle);
+    await delay(SHORT_DELAY_IN_MS);
     setCurrentHead('head');
-    setElement(linkedListkRef.current.prepend({
-      value: inputTextValue,
-      state: ElementStates.Default,
-    }));
-    setState(ElementStates.Modified);
+    linkedListkRef.current.prepend(inputTextValue);
+    setStateHead(ElementStates.Modified);
     setArray(linkedListkRef.current.toArray());
     setInputTextValue('');
-    await delay(DELAY_IN_MS);
-    setState(ElementStates.Default);
+    await delay(SHORT_DELAY_IN_MS);
+    setStateHead(ElementStates.Default);
   };
 
   const onClickAddTail = async () => {
-    setCurrentHeadAdd(
-      <Circle
-        letter={inputTextValue}
-        state={ElementStates.Changing}
-        isSmall={true}
-      />
-    );
-    await delay(DELAY_IN_MS);
-    setCurrentHeadAdd('');
-    setElement(linkedListkRef.current.append({
-      value: inputTextValue,
-      state: ElementStates.Default,
-    }));
+    let size = linkedListkRef.current.getSize();
+    setCurrentAdd({
+      index: size - 1,
+      head: circle,
+      tail: null,
+    });
+    await delay(SHORT_DELAY_IN_MS);
+    setCurrentAdd({
+      index: size - 1,
+      head: null,
+      tail: null,
+    });
+    linkedListkRef.current.append(inputTextValue);
     setArray(linkedListkRef.current.toArray());
-    const size = linkedListkRef.current.getSize();
+    size = linkedListkRef.current.getSize();
     setStateAdd(Array(size).fill(ElementStates.Default));
     stateAdd[size - 1] = ElementStates.Modified;
     setStateAdd([...stateAdd]);
     setInputTextValue('');
-    await delay(DELAY_IN_MS);
+    await delay(SHORT_DELAY_IN_MS);
     stateAdd[size - 1] = ElementStates.Default;
     setStateAdd([...stateAdd]);
   };
@@ -127,16 +117,10 @@ export const ListPage: React.FC = () => {
     if (!array || !inputIndexValue) return;
     if (inputIndexValue >= linkedListkRef.current.getSize()) return;
 
-    setCurrentHead(
-      <Circle
-        letter={inputTextValue}
-        state={ElementStates.Changing}
-        isSmall={true}
-      />
-    );
+    setCurrentHead(circle);
     await delay(SHORT_DELAY_IN_MS);
     setCurrentHead('head');
-    setState(ElementStates.Changing);
+    setStateHead(ElementStates.Changing);
     
     setArray(linkedListkRef.current.toArray());
     
@@ -147,36 +131,20 @@ export const ListPage: React.FC = () => {
     for (let i = 1; i <= index; i++) {
       setCurrentAdd({
         index: i,
-        state: ElementStates.Changing,
-        head: (
-          <Circle
-          letter={inputTextValue}
-          state={ElementStates.Changing}
-          isSmall={true}
-          />
-          ),
-          tail: null,
-        });
-        
+        head: circle,
+        tail: null,
+      });
       stateAdd[i-1] = ElementStates.Changing;
-
       setStateAdd([...stateAdd]);
       await delay(SHORT_DELAY_IN_MS);
-
-
     }
     setCurrentAdd({
       index: index,
-      state: ElementStates.Changing,
       head: null,
       tail: null,
     });
-    // stateAdd[index] = ElementStates.Default;
     await delay(SHORT_DELAY_IN_MS);
-    linkedListkRef.current.addByIndex({
-      value: inputTextValue,
-      state: ElementStates.Default,
-    }, index);
+    linkedListkRef.current.addByIndex(inputTextValue, index);
     setArray(linkedListkRef.current.toArray());
     stateAdd[index] = ElementStates.Modified;
     setStateAdd([...stateAdd]);
@@ -187,7 +155,6 @@ export const ListPage: React.FC = () => {
       stateAdd[i] = ElementStates.Default;
     }
     setStateAdd([...stateAdd]);
-    
   };
 
   const onClickDeleteByIndex = async () => {
@@ -259,22 +226,20 @@ export const ListPage: React.FC = () => {
         {array?.map((el, index) => (
           <li key={index} className={listStyles.item}>
             <Circle
-              letter={`${el.value}`}
+              letter={`${el}`}
               index={index}
               head={
-                index === head && index !== currentAdd.index
-                ? currentHead
-                : null
-                || index === array.length - 1 && index !== currentAdd.index
-                ? currentHeadAdd
-                : null
-                || index === currentAdd.index
+                index === currentAdd.index
                 ? currentAdd.head
+                : null
+                || index === head
+                ? currentHead
                 : null
               }
               tail={index === array.length - 1 ? 'tail' : null}
-              state={index === head && !stateAdd[index]
-                ? state 
+              state={
+                index === head && !stateAdd[index]
+                ? stateHead
                 : stateAdd[index]
               }
             />

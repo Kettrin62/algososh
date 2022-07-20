@@ -24,8 +24,8 @@ interface ILinkedList<T> {
 export class LinkedList<T> implements ILinkedList<T> {
   private head: LinkedListNode<T> | null;
   private size: number;
-  private initArray: T[] | undefined;
-  constructor(array?: T[]) {
+  private initArray: TElement<T>[] | undefined;
+  constructor(array?: TElement<T>[]) {
     this.head = null;
     this.size = 0;
     this.initArray = array;
@@ -153,7 +153,7 @@ export class LinkedList<T> implements ILinkedList<T> {
 
   toInitArray() {
     this.initArray?.map(item => {
-      this.append(item);
+      this.append(item.value);
     })
     return this.toArray();
   }
