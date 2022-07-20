@@ -100,15 +100,6 @@ export const ListPage: React.FC = () => {
       value: inputTextValue,
       state: ElementStates.Default,
     }));
-
-    // const newArr = linkedListkRef.current.toArray();
-    // newArr[newArr.length - 1].state = ElementStates.Modified;
-    // setArray(newArr);
-    // setInputTextValue('');
-    // await delay(DELAY_IN_MS);
-    // newArr[newArr.length - 1].state = ElementStates.Default;
-    // setArray(linkedListkRef.current.toArray());
-
     setArray(linkedListkRef.current.toArray());
     const size = linkedListkRef.current.getSize();
     setStateAdd(Array(size).fill(ElementStates.Default));
@@ -167,7 +158,7 @@ export const ListPage: React.FC = () => {
           tail: null,
         });
         
-      if (i !== index) stateAdd[i] = ElementStates.Changing;
+      stateAdd[i-1] = ElementStates.Changing;
 
       setStateAdd([...stateAdd]);
       await delay(SHORT_DELAY_IN_MS);
@@ -270,7 +261,8 @@ export const ListPage: React.FC = () => {
             <Circle
               letter={`${el.value}`}
               index={index}
-              head={index === head && index !== currentAdd.index
+              head={
+                index === head && index !== currentAdd.index
                 ? currentHead
                 : null
                 || index === array.length - 1 && index !== currentAdd.index
