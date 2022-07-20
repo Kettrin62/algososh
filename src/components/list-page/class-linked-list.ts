@@ -24,8 +24,8 @@ interface ILinkedList<T> {
 export class LinkedList<T> implements ILinkedList<T> {
   private head: LinkedListNode<T> | null;
   private size: number;
-  private initArray: TElement<T>[] | undefined;
-  constructor(array?: TElement<T>[]) {
+  private initArray: T[] | undefined;
+  constructor(array?: T[]) {
     this.head = null;
     this.size = 0;
     this.initArray = array;
@@ -69,6 +69,7 @@ export class LinkedList<T> implements ILinkedList<T> {
       current.next = node;
     }
     this.size++;
+    return current?.next?.value;
   }
 
   prepend(element: T) {
@@ -80,6 +81,7 @@ export class LinkedList<T> implements ILinkedList<T> {
       this.head = node;
     }
     this.size++;
+    return this.head.value;
   }
 
   deleteHead() {
@@ -150,8 +152,8 @@ export class LinkedList<T> implements ILinkedList<T> {
   }
 
   toInitArray() {
-    this.initArray?.map((item) => {
-      this.append(item.value);
+    this.initArray?.map(item => {
+      this.append(item);
     })
     return this.toArray();
   }
