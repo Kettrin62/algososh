@@ -32,7 +32,8 @@ export const ListPage: React.FC = () => {
   const [array, setArray] = useState<TElement<number | string>[]>();
   const [head, setHead] = useState<number>();
 
-  const [currentHead, setCurrentHead] = useState<string | React.ReactElement>('head');
+  const [currentHead, setCurrentHead] = useState<string | React.ReactElement>();
+
   const [currentHeadAdd, setCurrentHeadAdd] = useState<string | React.ReactElement>('');
   const [state, setState] = useState<ElementStates>();
   const [stateAdd, setStateAdd] = useState<ElementStates[]>(Array(linkedListkRef.current.getSize()).fill(ElementStates.Default));
@@ -134,6 +135,7 @@ export const ListPage: React.FC = () => {
   const onClickAddByIndex = async () => {
     if (!array || !inputIndexValue) return;
     if (inputIndexValue >= linkedListkRef.current.getSize()) return;
+
     setCurrentHead(
       <Circle
         letter={inputTextValue}
@@ -271,7 +273,7 @@ export const ListPage: React.FC = () => {
               head={index === head && index !== currentAdd.index
                 ? currentHead
                 : null
-                || index === array.length - 1
+                || index === array.length - 1 && index !== currentAdd.index
                 ? currentHeadAdd
                 : null
                 || index === currentAdd.index
