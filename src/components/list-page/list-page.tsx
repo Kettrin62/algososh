@@ -32,11 +32,10 @@ export const ListPage: React.FC = () => {
   const [array, setArray] = useState<TElement<number | string>[]>();
   const [head, setHead] = useState<number>();
 
-  // const [tail, setTail] = useState<number>();
   const [currentHead, setCurrentHead] = useState<string | React.ReactElement>('head');
   const [currentHeadAdd, setCurrentHeadAdd] = useState<string | React.ReactElement>('');
   const [state, setState] = useState<ElementStates>();
-  const [stateAdd, setStateAdd] = useState<ElementStates>();
+  const [stateAdd, setStateAdd] = useState<ElementStates[]>(Array(linkedListkRef.current.getSize()).fill(ElementStates.Default));
   const [element, setElement] = useState<TElement<number | string> | null>();
 
   const [currentAdd, setCurrentAdd] = useState<Current>({
@@ -45,6 +44,10 @@ export const ListPage: React.FC = () => {
     head: null,
     tail: null,
   })
+
+  const [color, setColor] = useState<ElementStates[]>(
+    Array(4).fill(ElementStates.Default)
+  );
 
 
   useEffect(() => {
@@ -96,13 +99,24 @@ export const ListPage: React.FC = () => {
       value: inputTextValue,
       state: ElementStates.Default,
     }));
-    const newArr = linkedListkRef.current.toArray();
-    newArr[newArr.length - 1].state = ElementStates.Modified;
-    setArray(newArr);
+
+    // const newArr = linkedListkRef.current.toArray();
+    // newArr[newArr.length - 1].state = ElementStates.Modified;
+    // setArray(newArr);
+    // setInputTextValue('');
+    // await delay(DELAY_IN_MS);
+    // newArr[newArr.length - 1].state = ElementStates.Default;
+    // setArray(linkedListkRef.current.toArray());
+
+    setArray(linkedListkRef.current.toArray());
+    const size = linkedListkRef.current.getSize();
+    setStateAdd(Array(size).fill(ElementStates.Default));
+    stateAdd[size - 1] = ElementStates.Modified;
+    setStateAdd([...stateAdd]);
     setInputTextValue('');
     await delay(DELAY_IN_MS);
-    newArr[newArr.length - 1].state = ElementStates.Default;
-    setArray(linkedListkRef.current.toArray());
+    stateAdd[size - 1] = ElementStates.Default;
+    setStateAdd([...stateAdd]);
   };
 
   const onClickDeleteHead = async () => {
@@ -118,15 +132,69 @@ export const ListPage: React.FC = () => {
   };
 
   const onClickAddByIndex = async () => {
+    if (!array || !inputIndexValue) return;
+    if (inputIndexValue >= linkedListkRef.current.getSize()) return;
+    setCurrentHead(
+      <Circle
+        letter={inputTextValue}
+        state={ElementStates.Changing}
+        isSmall={true}
+      />
+    );
     await delay(SHORT_DELAY_IN_MS);
-    const index = inputIndexValue ? + inputIndexValue : 0;
+    setCurrentHead('head');
+    setState(ElementStates.Changing);
+    
+    setArray(linkedListkRef.current.toArray());
+    
+    stateAdd[0] = ElementStates.Changing;
+
+    const index = + inputIndexValue;
+
+    for (let i = 1; i <= index; i++) {
+      setCurrentAdd({
+        index: i,
+        state: ElementStates.Changing,
+        head: (
+          <Circle
+          letter={inputTextValue}
+          state={ElementStates.Changing}
+          isSmall={true}
+          />
+          ),
+          tail: null,
+        });
+        
+      if (i !== index) stateAdd[i] = ElementStates.Changing;
+
+      setStateAdd([...stateAdd]);
+      await delay(SHORT_DELAY_IN_MS);
+
+
+    }
+    setCurrentAdd({
+      index: index,
+      state: ElementStates.Changing,
+      head: null,
+      tail: null,
+    });
+    // stateAdd[index] = ElementStates.Default;
+    await delay(SHORT_DELAY_IN_MS);
     linkedListkRef.current.addByIndex({
       value: inputTextValue,
       state: ElementStates.Default,
     }, index);
     setArray(linkedListkRef.current.toArray());
+    stateAdd[index] = ElementStates.Modified;
+    setStateAdd([...stateAdd]);
     setInputTextValue('');
     setInputIndexValue('');
+    await delay(SHORT_DELAY_IN_MS);
+    for (let i = 0; i <= index; i++) {
+      stateAdd[i] = ElementStates.Default;
+    }
+    setStateAdd([...stateAdd]);
+    
   };
 
   const onClickDeleteByIndex = async () => {
@@ -137,8 +205,7 @@ export const ListPage: React.FC = () => {
     setInputIndexValue('');
   };
 
-  // console.log(array);
-  // console.log(linkedListkRef.current.toArray());
+  
 
 
   return (
@@ -201,17 +268,20 @@ export const ListPage: React.FC = () => {
             <Circle
               letter={`${el.value}`}
               index={index}
-              head={index === head 
+              head={index === head && index !== currentAdd.index
                 ? currentHead
                 : null
                 || index === array.length - 1
                 ? currentHeadAdd
-                : null}
+                : null
+                || index === currentAdd.index
+                ? currentAdd.head
+                : null
+              }
               tail={index === array.length - 1 ? 'tail' : null}
-              state={
-                (index === head)
+              state={index === head && !stateAdd[index]
                 ? state 
-                : el.state
+                : stateAdd[index]
               }
             />
             {(index !== array.length - 1) 
