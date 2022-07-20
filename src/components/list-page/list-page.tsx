@@ -17,36 +17,28 @@ interface Current {
 };
 
 export const ListPage: React.FC = () => {
-
-  const [inputTextValue, setInputTextValue] = useState<string>('');
-  const [inputIndexValue, setInputIndexValue] = useState<number | string>();
-
   const [minLen, maxLen, max] = [3, 6, 100]
-
   const linkedList = new LinkedList<number | string>(randomArr(minLen, maxLen, max));
   const linkedListkRef = useRef(linkedList);
   
+  const [inputTextValue, setInputTextValue] = useState<string>('');
+  const [inputIndexValue, setInputIndexValue] = useState<number | string>();
   const [array, setArray] = useState<Array<string | number>>();
   const [head, setHead] = useState<number>();
-
   const [currentHead, setCurrentHead] = useState<string | React.ReactElement>('head');
   const [currentTail, setCurrentTail] = useState<string | React.ReactElement>('tail');
-
   const [stateHead, setStateHead] = useState<ElementStates>();
   const [state, setState] = useState<ElementStates[]>(Array(linkedListkRef.current.getSize()).fill(ElementStates.Default));
-
   const [currentAdd, setCurrentAdd] = useState<Current>({
     index: null,
     head: null,
     tail: null,
   });
-
   const [currentDelete, setCurrentDelete] = useState<Current>({
     index: null,
     head: null,
     tail: null,
   });
-
   const [stateButtonAddHead, setStateButtonAddHead] = useState({
     isLoader: false,
     disabled: true,
@@ -71,6 +63,14 @@ export const ListPage: React.FC = () => {
     isLoader: false,
     disabled: true,
   });
+
+  const circle = (value: string): React.ReactElement => (
+    <Circle
+      letter={value}
+      state={ElementStates.Changing}
+      isSmall={true}
+    />
+  );
 
   useEffect(() => {
     setArray(linkedListkRef.current.toInitArray());
@@ -108,14 +108,6 @@ export const ListPage: React.FC = () => {
     const target: number = + e.target.value;
     setInputIndexValue(target);
   };
-
-  const circle = (value: string): React.ReactElement => (
-    <Circle
-      letter={value}
-      state={ElementStates.Changing}
-      isSmall={true}
-    />
-  );
 
   const onClickAddHead = async () => {
     setStateButtonAddHead({isLoader: true, disabled: false});
