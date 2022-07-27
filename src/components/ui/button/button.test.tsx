@@ -1,5 +1,4 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-
 import { Button } from './button';
 
 describe('Отрисовка кнопок', () => {
@@ -14,8 +13,10 @@ describe('Отрисовка кнопок', () => {
   });
   
   it('Корректная отрисовка заблокированной кнопки', () => {
-    const button = render(<Button disabled={true} />);
-    expect(button).toMatchSnapshot();
+    // const button = render(<Button disabled={true} />);
+    render(<Button disabled={true} />);
+    const button = screen.getByRole("button");
+    expect(button).toBeDisabled();
   });
   
   it('Корректная отрисовка кнопки с индикацией загрузки', () => {
@@ -24,8 +25,8 @@ describe('Отрисовка кнопок', () => {
   });
 });
 
-describe('вызов колбека', () => {
-  it('корректность вызова колбека при клике на кнопку', () => {
+describe('Вызов колбека', () => {
+  it('Корректность вызова колбека при клике на кнопку', () => {
     const mockFn = jest.fn();
     render(<Button text="Текст" />);
     const button = screen.getByRole("button");
