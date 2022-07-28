@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DELAY_IN_MS } from '../../constants/delays';
 import { TElement } from '../../types/data';
 import { ElementStates } from '../../types/element-states';
-import { delay, reverse, stringConversion } from '../../utils/functions';
+import { delay, generateReverse, stringConversion } from '../../utils/functions';
 import Form from '../form/form';
 import { Button } from '../ui/button/button';
 import { Circle } from '../ui/circle/circle';
@@ -30,6 +30,7 @@ export const StringComponent: React.FC = () => {
     const arr = stringConversion(str);
     setArray([...arr]);
     const cycleEnd = arr.length / 2;
+
     // for (let i = 0; i < cycleEnd; i++) {
     //   setTimeout(() => {
     //     let start = i;
@@ -51,7 +52,17 @@ export const StringComponent: React.FC = () => {
     //     }, DELAY_IN_MS);
     //   }, DELAY_IN_MS * i);
     // }
-    setArray(reverse(arr, DELAY_IN_MS));
+
+    let generator = generateReverse(arr);
+    for (let i = 0; i < cycleEnd; i++) {
+      setTimeout(() => {
+        setArray(generator.next().value);
+        setTimeout(() => {
+          setArray(generator.next().value);
+        }, DELAY_IN_MS);
+      }, DELAY_IN_MS * i);
+    }
+
     await delay(DELAY_IN_MS * (cycleEnd + 1/2));
     setIsLoader(false);
   }

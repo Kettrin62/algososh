@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react';
-import { reverse } from './functions';
+import { generateReverse } from './functions';
 import {
   arrEven,
   reverseArrEven,
@@ -10,37 +10,46 @@ import {
   arrEmpty,
   reverseArrEmpty
 } from './dataTest';
+import { TElement } from '../types/data';
 
 describe('Тестирование алгоритма разворота строки', () => {
-  it('Корректно разворачивает строку с четным количеством символов', async () => {
-    jest.useFakeTimers();
-    expect(reverse(arrEven, 0)).toHaveLength(4);
-    await waitFor(() => {
-      expect(reverse(arrEven, 0)).toEqual(reverseArrEven);
-    });
+  it('Корректно разворачивает строку с четным количеством символов', () => {
+    let generator = generateReverse(arrEven);
+    let array: Array<TElement<string>> = [];
+    for(let value of generator) {
+      value;
+      array = value;
+    }
+    expect(array).toEqual(reverseArrEven);
   });
 
   it('Корректно разворачивает строку с нечетным количеством символов', async () => {
-    jest.useFakeTimers();
-    expect(reverse(arrOdd, 0)).toHaveLength(3);
-    await waitFor(() => {
-      expect(reverse(arrOdd, 0)).toEqual(reverseArrOdd);
-    });
+    let generator = generateReverse(arrOdd);
+    let array: Array<TElement<string>> = [];
+    for(let value of generator) {
+      value;
+      array = value;
+    }
+    expect(array).toEqual(reverseArrOdd);
   });
 
   it('Корректно разворачивает строку с одним символом', async () => {
-    jest.useFakeTimers();
-    expect(reverse(arrOne, 0)).toHaveLength(1);
-    await waitFor(() => {
-      expect(reverse(arrOne, 0)).toEqual(reverseArrOne);
-    });
+    let generator = generateReverse(arrOne);
+    let array: Array<TElement<string>> = [];
+    for(let value of generator) {
+      value;
+      array = value;
+    }
+    expect(array).toEqual(reverseArrOne);
   });
 
   it('Корректно разворачивает пустую строку', async () => {
-    jest.useFakeTimers();
-    expect(reverse(arrEmpty, 0)).toHaveLength(1);
-    await waitFor(() => {
-      expect(reverse(arrEmpty, 0)).toEqual(reverseArrEmpty);
-    });
+    let generator = generateReverse(arrEmpty);
+    let array: Array<TElement<string>> = [];
+    for(let value of generator) {
+      value;
+      array = value;
+    }
+    expect(array).toEqual(reverseArrEmpty);
   });
 });
