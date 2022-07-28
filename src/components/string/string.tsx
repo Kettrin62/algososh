@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DELAY_IN_MS } from '../../constants/delays';
 import { TElement } from '../../types/data';
 import { ElementStates } from '../../types/element-states';
-import { delay, stringConversion } from '../../utils/functions';
+import { delay, reverse, stringConversion } from '../../utils/functions';
 import Form from '../form/form';
 import { Button } from '../ui/button/button';
 import { Circle } from '../ui/circle/circle';
@@ -29,28 +29,29 @@ export const StringComponent: React.FC = () => {
   const reverseString = async (str: string)  => {
     const arr = stringConversion(str);
     setArray([...arr]);
-    const cycleEnd = arr.length / 2
-    for (let i = 0; i < cycleEnd; i++) {
-      setTimeout(() => {
-        let start = i;
-        let end = (str.length - 1) - start;
-        arr[start].state = ElementStates.Changing;
-        arr[end].state = ElementStates.Changing;
-        setArray([...arr]);
-        setTimeout(() => {
-          let curr = arr[start].value;
-          arr[start] = {
-            value: arr[end].value,
-            state: ElementStates.Modified,
-          };
-          arr[end] = {
-            value: curr,
-            state: ElementStates.Modified,
-          }
-          setArray([...arr]);
-        }, DELAY_IN_MS);
-      }, DELAY_IN_MS * i);
-    }
+    const cycleEnd = arr.length / 2;
+    // for (let i = 0; i < cycleEnd; i++) {
+    //   setTimeout(() => {
+    //     let start = i;
+    //     let end = (str.length - 1) - start;
+    //     arr[start].state = ElementStates.Changing;
+    //     arr[end].state = ElementStates.Changing;
+    //     setArray([...arr]);
+    //     setTimeout(() => {
+    //       let curr = arr[start].value;
+    //       arr[start] = {
+    //         value: arr[end].value,
+    //         state: ElementStates.Modified,
+    //       };
+    //       arr[end] = {
+    //         value: curr,
+    //         state: ElementStates.Modified,
+    //       }
+    //       setArray([...arr]);
+    //     }, DELAY_IN_MS);
+    //   }, DELAY_IN_MS * i);
+    // }
+    setArray(reverse(arr, DELAY_IN_MS));
     await delay(DELAY_IN_MS * (cycleEnd + 1/2));
     setIsLoader(false);
   }

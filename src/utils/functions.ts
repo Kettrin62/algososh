@@ -44,3 +44,29 @@ export const swap = (
 export const delay = (
   t: number
 ) => new Promise(resolve => setTimeout(resolve, t));
+
+export function reverse(arr: Array<TElement<string>>, delay: number): Array<TElement<string>> {
+  const cycleEnd = arr.length / 2;
+  for (let i = 0; i < cycleEnd; i++) {
+    setTimeout(() => {
+      let start = i;
+      let end = (arr.length - 1) - start;
+      arr[start].state = ElementStates.Changing;
+      arr[end].state = ElementStates.Changing;
+      // setArray([...arr]);
+      setTimeout(() => {
+        let curr = arr[start].value;
+        arr[start] = {
+          value: arr[end].value,
+          state: ElementStates.Modified,
+        };
+        arr[end] = {
+          value: curr,
+          state: ElementStates.Modified,
+        }
+        // setArray([...arr]);
+      }, delay);
+    }, delay * i);
+  }
+  return arr;
+};

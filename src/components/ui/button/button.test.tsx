@@ -6,12 +6,12 @@ describe('Отрисовка кнопок', () => {
     const button = render(<Button text="Текст" />);
     expect(button).toMatchSnapshot();
   });
-  
+
   it('Корректная отрисовка кнопки без текста', () => {
     const button = render(<Button />);
     expect(button).toMatchSnapshot();
   });
-  
+
   it('Корректная отрисовка заблокированной кнопки', () => {
     // const button = render(<Button disabled={true} />);
     render(<Button disabled={true} />);
