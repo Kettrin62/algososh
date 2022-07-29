@@ -3,7 +3,7 @@ import { SHORT_DELAY_IN_MS } from '../../constants/delays';
 import { TElement, TSelector } from '../../types/data';
 import { Direction } from '../../types/direction';
 import { ElementStates } from '../../types/element-states';
-import { delay, randomArr, swap } from '../../utils/functions';
+import { delay, generateBubbleSort, generateSelectionSort, randomArr, swap } from '../../utils/functions';
 import Form from '../form/form';
 import { Button } from '../ui/button/button';
 import { Column } from '../ui/column/column';
@@ -34,30 +34,44 @@ export const SortingPage: React.FC = () => {
     if (arr[0].state !== ElementStates.Default) {
       arr.forEach(item => item.state = ElementStates.Default);
     }
+
+    // const { length } = arr;
+    // for (let i = 0; i < length - 1; i++) {
+    //   let maxInd = i;
+    //   let minInd = i;
+    //   for (let j = i + 1; j < length; j++) {
+    //     arr[i].state = ElementStates.Changing;
+    //     arr[j].state = ElementStates.Changing;
+    //     setArray([...arr]);
+    //     await delay(SHORT_DELAY_IN_MS);
+    //     if (selector === 'descending' && arr[maxInd].value < arr[j].value) {
+    //       maxInd = j;
+    //     }
+    //     if (selector === 'ascending' && arr[minInd].value > arr[j].value) {
+    //       minInd = j;
+    //     }
+    //     arr[j].state = ElementStates.Default;
+    //     setArray([...arr]);
+    //   }
+    //   selector === 'descending' && swap(arr, i, maxInd);
+    //   selector === 'ascending' && swap(arr, i, minInd);
+    //   arr[i].state = ElementStates.Modified;
+    // }
+    // arr[length - 1].state = ElementStates.Modified;
+    // setArray([...arr]);
+
     const { length } = arr;
+    let generator = generateSelectionSort(arr, selector);
     for (let i = 0; i < length - 1; i++) {
-      let maxInd = i;
-      let minInd = i;
       for (let j = i + 1; j < length; j++) {
-        arr[i].state = ElementStates.Changing;
-        arr[j].state = ElementStates.Changing;
-        setArray([...arr]);
+        setArray(generator.next().value);
         await delay(SHORT_DELAY_IN_MS);
-        if (selector === 'descending' && arr[maxInd].value < arr[j].value) {
-          maxInd = j;
-        }
-        if (selector === 'ascending' && arr[minInd].value > arr[j].value) {
-          minInd = j;
-        }
-        arr[j].state = ElementStates.Default;
-        setArray([...arr]);
+        setArray(generator.next().value);
       }
-      selector === 'descending' && swap(arr, i, maxInd);
-      selector === 'ascending' && swap(arr, i, minInd);
-      arr[i].state = ElementStates.Modified;
     }
-    arr[length - 1].state = ElementStates.Modified;
-    setArray([...arr]);
+    setArray(generator.next().value);
+
+
     setDisabled(false);
     setStateButtonAscending({
       isLoader: false,
@@ -73,23 +87,36 @@ export const SortingPage: React.FC = () => {
     if (arr[0].state !== ElementStates.Default) {
       arr.forEach(item => item.state = ElementStates.Default);
     }
+
+    // for (let i = 0; i < arr.length; i++) {
+    //   for (let j = 0; j < arr.length - i - 1; j++) {
+    //     arr[j].state = ElementStates.Changing;
+    //     arr[j + 1].state = ElementStates.Changing;
+    //     setArray([...arr]);
+    //     await delay(SHORT_DELAY_IN_MS);
+    //     if (
+    //       selector === 'descending' && arr[j].value < arr[j + 1].value || 
+    //       selector === 'ascending' && arr[j].value > arr[j + 1].value
+    //     ) {
+    //       swap(arr, j, j + 1);
+    //     }
+    //     arr[j].state = ElementStates.Default;
+    //   }
+    //   arr[arr.length - i - 1].state = ElementStates.Modified;
+    // }
+    // setArray([...arr]);
+
+
+    let generator = generateBubbleSort(arr, selector);
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < arr.length - i - 1; j++) {
-        arr[j].state = ElementStates.Changing;
-        arr[j + 1].state = ElementStates.Changing;
-        setArray([...arr]);
+        setArray(generator.next().value);
         await delay(SHORT_DELAY_IN_MS);
-        if (
-          selector === 'descending' && arr[j].value < arr[j + 1].value || 
-          selector === 'ascending' && arr[j].value > arr[j + 1].value
-        ) {
-          swap(arr, j, j + 1);
-        }
-        arr[j].state = ElementStates.Default;
       }
-      arr[arr.length - i - 1].state = ElementStates.Modified;
     }
-    setArray([...arr]);
+    setArray(generator.next().value);
+
+
     setDisabled(false);
     setStateButtonAscending({
       isLoader: false,

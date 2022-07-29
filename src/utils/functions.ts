@@ -1,4 +1,4 @@
-import { TElement } from '../types/data';
+import { TElement, TSelector } from '../types/data';
 import { ElementStates } from '../types/element-states';
 
 export function stringConversion(str: string): TElement<string>[] {
@@ -10,7 +10,7 @@ export function stringConversion(str: string): TElement<string>[] {
     });
   };
   return arr;
-};
+}
 
 export function randomArr(
   minLen: number, 
@@ -45,11 +45,15 @@ export const delay = (
   t: number
 ) => new Promise(resolve => setTimeout(resolve, t));
 
-export function* generateReverse(arr: Array<TElement<string>>): Generator<Array<TElement<string>>> {
-  const cycleEnd = arr.length / 2;
+export function* generateReverse(
+  arr: Array<TElement<string>>
+): Generator<Array<TElement<string>>> {
+  const { length } = arr;
+  if (length < 1) return [];
+  const cycleEnd = length / 2;
   for (let i = 0; i < cycleEnd; i++) {
     let start = i;
-    let end = (arr.length - 1) - start;
+    let end = (length - 1) - start;
     arr[start].state = ElementStates.Changing;
     arr[end].state = ElementStates.Changing;
     yield [...arr];
@@ -65,4 +69,67 @@ export function* generateReverse(arr: Array<TElement<string>>): Generator<Array<
     yield [...arr];
   }
   yield arr;
-};
+}
+
+export function* generateSelectionSort(
+  arr: TElement<number>[], 
+  selector: TSelector
+): Generator<TElement<number>[]> {
+  const { length } = arr;
+  if (length < 1) return [];
+  for (let i = 0; i < length - 1; i++) {
+    let maxInd = i;
+    let minInd = i;
+    for (let j = i + 1; j < length; j++) {
+      arr[i].state = ElementStates.Changing;
+      arr[j].state = ElementStates.Changing;
+      // setArray([...arr]);
+      yield [...arr];
+
+      // await delay(SHORT_DELAY_IN_MS);
+      if (selector === 'descending' && arr[maxInd].value < arr[j].value) {
+        maxInd = j;
+      }
+      if (selector === 'ascending' && arr[minInd].value > arr[j].value) {
+        minInd = j;
+      }
+      arr[j].state = ElementStates.Default;
+      // setArray([...arr]);
+      yield [...arr];
+    }
+    selector === 'descending' && swap(arr, i, maxInd);
+    selector === 'ascending' && swap(arr, i, minInd);
+    arr[i].state = ElementStates.Modified;
+  }
+  arr[length - 1].state = ElementStates.Modified;
+  // setArray([...arr]);
+  yield [...arr];
+}
+
+export function* generateBubbleSort(
+  arr: TElement<number>[], 
+  selector: TSelector
+): Generator<TElement<number>[]> {
+  const { length } = arr;
+  if (length < 1) return [];
+  for (let i = 0; i < length; i++) {
+    for (let j = 0; j < length - i - 1; j++) {
+      arr[j].state = ElementStates.Changing;
+      arr[j + 1].state = ElementStates.Changing;
+      // setArray([...arr]);
+      yield [...arr];
+
+      // await delay(SHORT_DELAY_IN_MS);
+      if (
+        (selector === 'descending' && arr[j].value < arr[j + 1].value) || 
+        (selector === 'ascending' && arr[j].value > arr[j + 1].value)
+      ) {
+        swap(arr, j, j + 1);
+      }
+      arr[j].state = ElementStates.Default;
+    }
+    arr[length - i - 1].state = ElementStates.Modified;
+  }
+  // setArray([...arr]);
+  yield [...arr];
+}
