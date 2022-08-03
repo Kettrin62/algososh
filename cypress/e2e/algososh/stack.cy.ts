@@ -63,8 +63,8 @@ describe('Корректно отображается страница "Стек
     cy.get('[class^=circle_circle]').last().as('last');
     cy.get('@buttonDelete').click();
     cy.get(`@last`)
-    .should('have.css', 'border', CHANGING_COLOR)
-    .contains('4');
+      .should('have.css', 'border', CHANGING_COLOR)
+      .contains('4');
     cy.wait(SHORT_DELAY_IN_MS);
     cy.get('[class^=circle_circle]').last().as('newLast');
     cy.get('@newLast').contains('3');
