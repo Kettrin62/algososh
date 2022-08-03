@@ -1,3 +1,10 @@
+import { 
+  CHANGING_COLOR, 
+  DEFAULT_COLOR, 
+  SHORT_DELAY_IN_MS 
+} from "./constants.cy";
+
+
 export function backToContants() {
   it('При клике "К оглавлению" должна открыться главная страница', 
     () => {
@@ -11,3 +18,25 @@ export const openPage = (page: string, href: string) => {
   cy.get(`[href*=${href}]`).click();
   cy.contains(`${page}`);
 };
+
+export const addToStack = (value: string) => {
+  cy.get('input').as('input');
+  cy.get('@input').type(value);
+  cy.get('button').contains('Добавить').as('buttonAdd');
+  
+  cy.get('@buttonAdd').click();
+
+  cy.get('[class^=circle_circle]').last().as(value);
+  cy.get(`@${value}`)
+    .should('have.css', 'border', CHANGING_COLOR)
+    .contains(value);
+  cy.wait(SHORT_DELAY_IN_MS);
+  cy.get(`@${value}`)
+    .should('have.css', 'border', DEFAULT_COLOR)
+    .contains(value);
+  cy.get(`@${value}`).prev().should('have.text', 'top');
+};
+
+export function notHaveTop(el: string) {
+  cy.get(el).prev().should('not.have.text', 'top');
+}
