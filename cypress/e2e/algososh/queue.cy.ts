@@ -1,13 +1,11 @@
 import { 
   openPage, 
   addToQueue, 
-  notHaveTop, 
   notHaveTail
 } from './utils/functions.cy';
 import {
   DEFAULT_COLOR,
   CHANGING_COLOR,
-  MODIFIED_COLOR,
   SHORT_DELAY_IN_MS
 } from './utils/constants.cy';
 
@@ -24,11 +22,8 @@ describe('Корректно отображается страница "Очер
 
   it('Если инпут непустой, то кнопка разблокирована', () => {
     cy.get('input').as('input');
-    cy.get('button').contains('Добавить').as('buttonAdd');
-
-    cy.get('@input').type('1');
-    cy.get('@buttonAdd').should('not.be.disabled');
-
+    cy.get('input').type('1');
+    cy.get('button').contains('Добавить').should('not.be.disabled');
     cy.get('@input').clear();
   });
 
@@ -46,9 +41,8 @@ describe('Корректно отображается страница "Очер
   });
 
   it('Элемент правильно удаляется из очереди', () => {
-    cy.get('button').contains('Удалить').as('buttonDelete');
     cy.get('[class^=circle_circle]').first().as('first');
-    cy.get('@buttonDelete').click();
+    cy.get('button').contains('Удалить').click();
     cy.get(`@first`)
       .should('have.css', 'border', CHANGING_COLOR)
       .contains('1');
@@ -66,8 +60,7 @@ describe('Корректно отображается страница "Очер
   });
 
   it('Правильно очищается очередь по нажатию кнопки "Очистить"', () => {
-    cy.get('button').contains('Очистить').as('buttonClear');
-    cy.get('@buttonClear').click();
+    cy.get('button').contains('Очистить').click();
     cy.get('ul').each(($el) => {
       cy.wrap($el.find('[class^=circle_circle]')).should('not.have.text');
     });

@@ -1,5 +1,8 @@
-import { waitFor } from '@testing-library/react';
-import { generateBubbleSort, generateReverse, generateSelectionSort } from './functions';
+import { 
+  generateBubbleSort, 
+  generateReverse, 
+  generateSelectionSort 
+} from './functions';
 import {
   arrEven,
   reverseArrEven,
@@ -163,4 +166,3 @@ describe('Тестирование алгоритма сортировки пу�
     expect(arrayDescending).toEqual(arrSortDescending);
   });
 });
-

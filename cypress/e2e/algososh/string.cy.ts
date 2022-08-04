@@ -17,34 +17,12 @@ describe('Корректно отображается страница "Стро
   });
 
   it('Если инпут непустой, то кнопка разблокирована', () => {
-    cy.get('input').as('input');
-    cy.get('button').as('button');
-
-    cy.get('@input').type('ketrin');
-    cy.get('@button').should('not.be.disabled');
-
-    // cy.get('@input').clear();
+    cy.get('input').type('ketrin');
+    cy.get('button').should('not.be.disabled');
   });
 
-  // it('Если выполняется разворот строки, то кнопка "isLoader"', () => {
-  //   cy.get('input').as('input');
-  //   cy.get('button').as('button');
-
-  //   cy.get('@input').type('ketrin');
-  //   cy.get('@button').contains('Развернуть').click();
-  //   cy.get('@button').find('img').should('be.visible');
-
-  //   cy.get('@button').not('img');
-
-  //   cy.get('@input').clear();
-  // });
-
   it('Строка разворачивается корректно', () => {
-    cy.get('input').as('input');
-    cy.get('button').as('button');
-    
-    // cy.get('@input').type('ketrin');
-    cy.get('@button').contains('Развернуть').click();
+    cy.get('button').contains('Развернуть').click();
 
     cy.get('[class^=circle_circle]').first().as('k');
     cy.get('ul>li').eq(1).find('[class^=circle_circle]').as('e');

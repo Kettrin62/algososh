@@ -1,4 +1,8 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { 
+  render, 
+  screen, 
+  fireEvent 
+} from '@testing-library/react';
 import { Button } from './button';
 
 describe('Отрисовка кнопок', () => {
@@ -13,7 +17,6 @@ describe('Отрисовка кнопок', () => {
   });
 
   it('Корректная отрисовка заблокированной кнопки', () => {
-    // const button = render(<Button disabled={true} />);
     render(<Button disabled={true} />);
     const button = screen.getByRole("button");
     expect(button).toBeDisabled();

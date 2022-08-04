@@ -4,9 +4,7 @@ import {
   notHaveTop 
 } from './utils/functions.cy';
 import {
-  DEFAULT_COLOR,
   CHANGING_COLOR,
-  MODIFIED_COLOR,
   SHORT_DELAY_IN_MS
 } from './utils/constants.cy';
 
@@ -23,27 +21,10 @@ describe('Корректно отображается страница "Стек
 
   it('Если инпут непустой, то кнопка разблокирована', () => {
     cy.get('input').as('input');
-    cy.get('button').contains('Добавить').as('buttonAdd');
-
     cy.get('@input').type('1');
-    cy.get('@buttonAdd').should('not.be.disabled');
-
+    cy.get('button').contains('Добавить').should('not.be.disabled');
     cy.get('@input').clear();
   });
-
-  // it('Если выполняется рассчёт последовательности, то кнопка "isLoader"', () => {
-  //   cy.get('input').as('input');
-  //   cy.get('button').as('button');
-
-  //   cy.get('@input').type('5');
-  //   cy.get('@button').contains('Рассчитать').click();
-  //   cy.get('@button').find('img').should('be.visible');
-
-  //   cy.wait(7 * SHORT_DELAY_IN_MS);
-  //   cy.get('@button').not('img');
-
-  //   cy.get('@input').clear();
-  // });
 
   it('Элемент правильно добавляется в стек', () => {
     addToStack('1');
@@ -59,9 +40,8 @@ describe('Корректно отображается страница "Стек
   });
 
   it('Элемент правильно удаляется из стека', () => {
-    cy.get('button').contains('Удалить').as('buttonDelete');
     cy.get('[class^=circle_circle]').last().as('last');
-    cy.get('@buttonDelete').click();
+    cy.get('button').contains('Удалить').click();
     cy.get(`@last`)
       .should('have.css', 'border', CHANGING_COLOR)
       .contains('4');
@@ -72,9 +52,7 @@ describe('Корректно отображается страница "Стек
   });
 
   it('Правильно очищается стек по нажатию кнопки "Очистить"', () => {
-    cy.get('button').contains('Очистить').as('buttonClear');
-    cy.get('ul').as('stack');
-    cy.get('@buttonClear').click();
-    cy.get('@stack').children().should('have.length', '0');
+    cy.get('button').contains('Очистить').click();
+    cy.get('ul').children().should('have.length', '0');
   })
 });
