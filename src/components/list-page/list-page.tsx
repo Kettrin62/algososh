@@ -187,7 +187,7 @@ export const ListPage: React.FC = () => {
     if (size > 1) {
       setStateButtonDeleteHead({isLoader: false, disabled: false});
       setStateButtonDeleteTail({isLoader: false, disabled: false});
-      setStateButtonDeleteByIndex({isLoader: false, disabled: false});
+      inputIndexValue && setStateButtonDeleteByIndex({isLoader: false, disabled: false});
     } else {
       setStateButtonDeleteHead({isLoader: false, disabled: true});
       setStateButtonDeleteTail({isLoader: false, disabled: true});
@@ -211,7 +211,7 @@ export const ListPage: React.FC = () => {
     if (size > 1) {
       setStateButtonDeleteHead({isLoader: false, disabled: false});
       setStateButtonDeleteTail({isLoader: false, disabled: false});
-      setStateButtonDeleteByIndex({isLoader: false, disabled: false});
+      inputIndexValue && setStateButtonDeleteByIndex({isLoader: false, disabled: false});
     } else {
       setStateButtonDeleteHead({isLoader: false, disabled: true});
       setStateButtonDeleteTail({isLoader: false, disabled: true});
@@ -233,7 +233,6 @@ export const ListPage: React.FC = () => {
     setCurrentHead('head');
     setStateHead(ElementStates.Changing);
     setArray(linkedListkRef.current.toArray());
-    state[0] = ElementStates.Changing;
     const index = + inputIndexValue;
     for (let i = 1; i <= index; i++) {
       setCurrentAdd({
@@ -263,6 +262,7 @@ export const ListPage: React.FC = () => {
       state[i] = ElementStates.Default;
     }
     setState([...state]);
+    setStateHead(ElementStates.Default);
     setStateButtonAddByIndex({isLoader: false, disabled: true});
     setStateButtonDeleteHead({isLoader: false, disabled: false});
     setStateButtonDeleteTail({isLoader: false, disabled: false});
@@ -279,6 +279,7 @@ export const ListPage: React.FC = () => {
     if (!array || (!inputIndexValue && inputIndexValue !== 0)) return;
     if (inputIndexValue >= size) return;
     const index = inputIndexValue ? + inputIndexValue : 0;
+    setStateHead(ElementStates.Changing);
     for (let i = 0; i <= index; i++){
       state[i] = ElementStates.Changing;
       setState([...state]);
@@ -314,15 +315,15 @@ export const ListPage: React.FC = () => {
       state[i] = ElementStates.Default;
     }
     setState([...state]);
+    setStateHead(ElementStates.Default);
     if (size > 1) {
       setStateButtonDeleteHead({isLoader: false, disabled: false});
       setStateButtonDeleteTail({isLoader: false, disabled: false});
-      setStateButtonDeleteByIndex({isLoader: false, disabled: false});
     } else {
       setStateButtonDeleteHead({isLoader: false, disabled: true});
       setStateButtonDeleteTail({isLoader: false, disabled: true});
-      setStateButtonDeleteByIndex({isLoader: false, disabled: true});
     }
+    setStateButtonDeleteByIndex({isLoader: false, disabled: true});
   };
 
   return (
@@ -406,7 +407,7 @@ export const ListPage: React.FC = () => {
                 || index === currentDelete.index ? currentDelete.tail : null
               }
               state={
-                index === head && !state[index]
+                index === head
                 ? stateHead
                 : state[index]
               }

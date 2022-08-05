@@ -40,8 +40,6 @@ export const QueuePage: React.FC = () => {
   const length = queueRef.current.getLength();
   const size = queueRef.current.getSize();
 
-
-
   useEffect(() => {
     if (inputValue) {
       setStateButtonAdd({...stateButtonAdd, disabled: false});
